@@ -578,7 +578,7 @@ footer {
   </div>
 
   <footer>
-    Repas festif de fin de stage<br>
+    Repas festif de fin de stage · CRAMIF Essonne · Service Social<br>
     🎓
   </footer>
 
@@ -702,22 +702,35 @@ async function confirmerSuppression() {
   suppressionCible = null;
 }
 
-// ── Chargement liste ──
+// ── Chargement liste via JSONP (contourne CORS/redirect Apps Script) ──
 async function chargerListe() {
   document.getElementById('liste-contenu').innerHTML =
     '<div class="loading-spinner">Chargement…</div>';
   try {
-    const resp = await fetch(WEBHOOK_URL + '?action=lire', {
-      method: 'GET',
-      mode: 'cors'
+    await new Promise((resolve, reject) => {
+      const cbName = '_tdm_' + Date.now();
+      const script = document.createElement('script');
+      const timer = setTimeout(() => {
+        cleanup(); reject(new Error('timeout'));
+      }, 8000);
+      function cleanup() {
+        clearTimeout(timer);
+        delete window[cbName];
+        if (script.parentNode) script.parentNode.removeChild(script);
+      }
+      window[cbName] = function(data) {
+        cleanup();
+        if (data && data.status === 'ok') afficherListe(data.entries);
+        else afficherListe([]);
+        resolve();
+      };
+      script.src = WEBHOOK_URL + '?action=lire&callback=' + cbName;
+      script.onerror = () => { cleanup(); reject(new Error('erreur script')); };
+      document.head.appendChild(script);
     });
-    const data = await resp.json();
-    if (data.status === 'ok') afficherListe(data.entries);
-    else document.getElementById('liste-contenu').innerHTML =
-      '<div class="liste-vide">Aucun apport enregistré pour l\'instant.</div>';
   } catch(e) {
     document.getElementById('liste-contenu').innerHTML =
-      '<div class="liste-vide">Impossible de charger la liste. Actualisez dans quelques instants.</div>';
+      '<div class="liste-vide">Actualisez dans quelques instants… ↻</div>';
   }
 }
 
