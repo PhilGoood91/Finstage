@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Repas de fin de stage — CRAMIF</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --vert:       #4D8B6F;
+  --vert-clair: #7DB89A;
+  --vert-pale:  #EAF4EF;
+  --bleu:       #3A6B8A;
+  --bleu-clair: #5A8FAD;
+  --bleu-pale:  #EAF2F8;
+  --or:         #C4913A;
+  --or-clair:   #E8C56E;
+  --creme:      #F9F6EE;
+  --creme2:     #F0EBE0;
+  --brun:       #3D2B1F;
+  --txt:        #2C3E2D;
+  --txt-dim:    #7A8C7B;
+  --blanc:      #FFFFFF;
+  --rouge-doux: #C0392B;
+
+  --radius: 14px;
+  --shadow: 0 4px 24px rgba(61,43,31,0.10);
+  --shadow-lg: 0 8px 40px rgba(61,43,31,0.15);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Lato', sans-serif;
+  background: var(--creme);
+  color: var(--txt);
+  min-height: 100vh;
+  background-image:
+    radial-gradient(ellipse 70% 50% at 10% 0%, rgba(77,139,111,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 90% 100%, rgba(58,107,138,0.07) 0%, transparent 60%);
+}
+
+/* ── HEADER ── */
+header {
+  background: linear-gradient(135deg, var(--vert) 0%, var(--bleu) 100%);
+  padding: 32px 20px 24px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+header::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Ccircle cx='30' cy='30' r='1.5' fill='rgba(255,255,255,0.06)'/%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
+}
+.header-picto {
+  font-size: 2.4rem;
+  margin-bottom: 8px;
+  display: block;
+  animation: float 3s ease-in-out infinite;
+}
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
+
+h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.4rem, 5vw, 1.9rem);
+  font-weight: 700;
+  color: var(--blanc);
+  letter-spacing: 0.02em;
+  line-height: 1.3;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+.header-sub {
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.75);
+  font-weight: 300;
+  margin-top: 6px;
+  letter-spacing: 0.05em;
+}
+.header-tag {
+  display: inline-block;
+  background: rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.9);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 4px 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.25);
+  margin-top: 10px;
+}
+
+/* ── CONTAINER ── */
+.container {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 20px 14px 60px;
+}
+
+/* ── JAUGE ÉQUILIBRE ── */
+.equilibre-card {
+  background: var(--blanc);
+  border-radius: var(--radius);
+  padding: 18px 18px 14px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(77,139,111,0.12);
+}
+.equilibre-titre {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--vert);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.equilibre-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.eq-item {
+  text-align: center;
+}
+.eq-label {
+  font-size: 0.62rem;
+  color: var(--txt-dim);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.eq-bar-outer {
+  height: 6px;
+  background: var(--creme2);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 3px;
+}
+.eq-bar-inner {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.6s ease;
+}
+.eq-count {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+.bar-sale    { background: var(--vert); }
+.bar-sucre   { background: var(--or); }
+.bar-boisson { background: var(--bleu-clair); }
+.bar-entree  { background: #8B6B4D; }
+.bar-pain    { background: #C49A6C; }
+.bar-autre   { background: var(--txt-dim); }
+.count-sale    { color: var(--vert); }
+.count-sucre   { color: var(--or); }
+.count-boisson { color: var(--bleu-clair); }
+.count-entree  { color: #8B6B4D; }
+.count-pain    { color: #C49A6C; }
+.count-autre   { color: var(--txt-dim); }
+
+.equilibre-grid-2 {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+/* ── FORMULAIRE ── */
+.form-card {
+  background: var(--blanc);
+  border-radius: var(--radius);
+  padding: 22px 18px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(77,139,111,0.12);
+}
+.form-titre {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--brun);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.field {
+  margin-bottom: 14px;
+}
+.field label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--vert);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.field input, .field select, .field textarea {
+  width: 100%;
+  border: 1.5px solid var(--creme2);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-family: 'Lato', sans-serif;
+  font-size: 1rem;
+  background: var(--creme);
+  color: var(--txt);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  appearance: none;
+  -webkit-appearance: none;
+}
+.field input:focus, .field select:focus, .field textarea:focus {
+  outline: none;
+  border-color: var(--vert);
+  box-shadow: 0 0 0 3px rgba(77,139,111,0.12);
+  background: var(--blanc);
+}
+.field select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%234D8B6F' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+}
+
+/* Chips de catégorie */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.chip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 13px;
+  border-radius: 20px;
+  border: 1.5px solid var(--creme2);
+  background: var(--creme);
+  font-family: 'Lato', sans-serif;
+  font-size: 0.82rem;
+  color: var(--txt-dim);
+  cursor: pointer;
+  transition: all 0.18s;
+  font-weight: 400;
+}
+.chip:hover { border-color: var(--vert-clair); color: var(--vert); }
+.chip.selected {
+  background: var(--vert-pale);
+  border-color: var(--vert);
+  color: var(--vert);
+  font-weight: 700;
+}
+.chip.sel-sucre.selected   { background: rgba(196,145,58,0.1); border-color: var(--or); color: var(--or); }
+.chip.sel-boisson.selected { background: var(--bleu-pale); border-color: var(--bleu-clair); color: var(--bleu); }
+.chip.sel-entree.selected  { background: rgba(139,107,77,0.1); border-color: #8B6B4D; color: #8B6B4D; }
+.chip.sel-pain.selected    { background: rgba(196,154,108,0.1); border-color: #C49A6C; color: #8B6B4D; }
+.chip.sel-autre.selected   { background: var(--creme2); border-color: var(--txt-dim); color: var(--txt-dim); }
+
+.btn-envoyer {
+  display: block;
+  width: 100%;
+  background: linear-gradient(135deg, var(--vert) 0%, var(--bleu) 100%);
+  color: var(--blanc);
+  border: none;
+  border-radius: 10px;
+  padding: 14px;
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 16px rgba(77,139,111,0.3);
+  margin-top: 6px;
+}
+.btn-envoyer:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(77,139,111,0.4); }
+.btn-envoyer:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+/* ── STATUS ── */
+.status-msg {
+  border-radius: 10px;
+  padding: 11px 16px;
+  font-size: 0.88rem;
+  text-align: center;
+  display: none;
+  margin-top: 10px;
+}
+.status-msg.ok  { background: var(--vert-pale); border: 1px solid var(--vert-clair); color: var(--vert); display: block; }
+.status-msg.err { background: rgba(192,57,43,0.08); border: 1px solid rgba(192,57,43,0.3); color: var(--rouge-doux); display: block; }
+.status-msg.loading { background: var(--bleu-pale); border: 1px solid var(--bleu-clair); color: var(--bleu); display: block; }
+
+/* ── LISTE DES APPORTS ── */
+.liste-card {
+  background: var(--blanc);
+  border-radius: var(--radius);
+  padding: 20px 18px;
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(77,139,111,0.12);
+}
+.liste-titre {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--brun);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.btn-refresh {
+  background: var(--vert-pale);
+  border: 1px solid var(--vert-clair);
+  border-radius: 8px;
+  padding: 5px 12px;
+  font-size: 0.78rem;
+  color: var(--vert);
+  cursor: pointer;
+  font-family: 'Lato', sans-serif;
+  font-weight: 700;
+  transition: all 0.15s;
+}
+.btn-refresh:hover { background: var(--vert); color: var(--blanc); }
+
+.liste-vide {
+  text-align: center;
+  padding: 30px 0;
+  color: var(--txt-dim);
+  font-style: italic;
+  font-size: 0.92rem;
+}
+
+.cat-section { margin-bottom: 14px; }
+.cat-header {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  display: inline-block;
+}
+.cat-sale    { background: var(--vert-pale); color: var(--vert); }
+.cat-sucre   { background: rgba(196,145,58,0.1); color: var(--or); }
+.cat-boisson { background: var(--bleu-pale); color: var(--bleu); }
+.cat-entree  { background: rgba(139,107,77,0.1); color: #8B6B4D; }
+.cat-pain    { background: rgba(196,154,108,0.1); color: #8B6B4D; }
+.cat-autre   { background: var(--creme2); color: var(--txt-dim); }
+
+.apport-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 12px;
+  border-radius: 8px;
+  margin-bottom: 5px;
+  background: var(--creme);
+  border: 1px solid rgba(77,139,111,0.08);
+  transition: all 0.15s;
+  gap: 10px;
+}
+.apport-item:hover { background: var(--vert-pale); border-color: var(--vert-clair); }
+.apport-nom {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--brun);
+  min-width: 80px;
+}
+.apport-plat {
+  flex: 1;
+  font-size: 0.9rem;
+  color: var(--txt);
+  font-style: italic;
+}
+.btn-suppr {
+  background: transparent;
+  border: 1px solid rgba(192,57,43,0.25);
+  border-radius: 6px;
+  padding: 3px 8px;
+  font-size: 0.7rem;
+  color: rgba(192,57,43,0.6);
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+  font-family: 'Lato', sans-serif;
+}
+.btn-suppr:hover { background: var(--rouge-doux); color: var(--blanc); border-color: var(--rouge-doux); }
+
+.loading-spinner {
+  text-align: center;
+  padding: 20px;
+  color: var(--txt-dim);
+  font-style: italic;
+  font-size: 0.88rem;
+}
+
+/* ── FOOTER ── */
+footer {
+  text-align: center;
+  padding: 16px 0 0;
+  font-size: 0.72rem;
+  color: var(--txt-dim);
+  font-style: italic;
+  letter-spacing: 0.05em;
+}
+
+/* ── SÉPARATEUR ORNEMENTAL ── */
+.ornement {
+  text-align: center;
+  color: var(--or);
+  font-size: 0.9rem;
+  letter-spacing: 8px;
+  padding: 10px 0 4px;
+  opacity: 0.6;
+}
+
+/* Modal suppression */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  display: none;
+}
+.modal-overlay.show { display: flex; }
+.modal {
+  background: var(--blanc);
+  border-radius: var(--radius);
+  padding: 24px 22px;
+  max-width: 360px;
+  width: 100%;
+  box-shadow: var(--shadow-lg);
+}
+.modal h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  color: var(--brun);
+  margin-bottom: 10px;
+}
+.modal p { font-size: 0.88rem; color: var(--txt-dim); margin-bottom: 16px; }
+.modal-input {
+  width: 100%;
+  border: 1.5px solid var(--creme2);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 1rem;
+  font-family: 'Lato', sans-serif;
+  background: var(--creme);
+  margin-bottom: 14px;
+}
+.modal-input:focus { outline: none; border-color: var(--rouge-doux); }
+.modal-btns { display: flex; gap: 10px; }
+.btn-modal-cancel {
+  flex: 1; padding: 10px;
+  border: 1.5px solid var(--creme2);
+  border-radius: 8px;
+  background: var(--creme);
+  color: var(--txt-dim);
+  font-family: 'Lato', sans-serif;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+.btn-modal-confirm {
+  flex: 1; padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background: var(--rouge-doux);
+  color: var(--blanc);
+  font-family: 'Lato', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.btn-modal-confirm:hover { opacity: 0.85; }
+</style>
+</head>
+<body>
+
+<header>
+  <span class="header-picto">🎓</span>
+  <h1>Repas de fin de stage</h1>
+  <div class="header-sub">Célébrons ensemble cette belle étape !</div>
+  <div class="header-tag">✦ CRAMIF Essonne · Service Social ✦</div>
+</header>
+
+<div class="container">
+
+  <div class="ornement">✦ ✦ ✦</div>
+
+  <!-- JAUGE ÉQUILIBRE -->
+  <div class="equilibre-card">
+    <div class="equilibre-titre">
+      ⚖️ Équilibre du repas
+    </div>
+    <div class="equilibre-grid" id="eq-grid">
+      <div class="eq-item">
+        <div class="eq-label">🥗 Salé</div>
+        <div class="eq-bar-outer"><div class="eq-bar-inner bar-sale" id="bar-sale" style="width:0%"></div></div>
+        <div class="eq-count count-sale" id="count-sale">0</div>
+      </div>
+      <div class="eq-item">
+        <div class="eq-label">🍰 Sucré</div>
+        <div class="eq-bar-outer"><div class="eq-bar-inner bar-sucre" id="bar-sucre" style="width:0%"></div></div>
+        <div class="eq-count count-sucre" id="count-sucre">0</div>
+      </div>
+      <div class="eq-item">
+        <div class="eq-label">🥤 Boisson</div>
+        <div class="eq-bar-outer"><div class="eq-bar-inner bar-boisson" id="bar-boisson" style="width:0%"></div></div>
+        <div class="eq-count count-boisson" id="count-boisson">0</div>
+      </div>
+      <div class="eq-item">
+        <div class="eq-label">🥙 Entrée</div>
+        <div class="eq-bar-outer"><div class="eq-bar-inner bar-entree" id="bar-entree" style="width:0%"></div></div>
+        <div class="eq-count count-entree" id="count-entree">0</div>
+      </div>
+      <div class="eq-item">
+        <div class="eq-label">🥖 Pain</div>
+        <div class="eq-bar-outer"><div class="eq-bar-inner bar-pain" id="bar-pain" style="width:0%"></div></div>
+        <div class="eq-count count-pain" id="count-pain">0</div>
+      </div>
+      <div class="eq-item">
+        <div class="eq-label">✨ Autre</div>
+        <div class="eq-bar-outer"><div class="eq-bar-inner bar-autre" id="bar-autre" style="width:0%"></div></div>
+        <div class="eq-count count-autre" id="count-autre">0</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FORMULAIRE -->
+  <div class="form-card">
+    <div class="form-titre">🍽 J'ajoute mon apport</div>
+
+    <div class="field">
+      <label>Votre prénom</label>
+      <input type="text" id="input-prenom" placeholder="Ex : Marie, Pierre…" maxlength="40">
+    </div>
+
+    <div class="field">
+      <label>Ce que j'apporte</label>
+      <input type="text" id="input-plat" placeholder="Ex : Tarte aux fraises, Quiche lorraine…" maxlength="80">
+    </div>
+
+    <div class="field">
+      <label>Catégorie</label>
+      <div class="chips" id="chips-container">
+        <div class="chip sel-sale"    data-val="Plat salé"          onclick="selectChip(this)">🥗 Plat salé</div>
+        <div class="chip sel-sucre"   data-val="Plat sucré / dessert" onclick="selectChip(this)">🍰 Sucré / dessert</div>
+        <div class="chip sel-boisson" data-val="Boisson"             onclick="selectChip(this)">🥤 Boisson</div>
+        <div class="chip sel-entree"  data-val="Entrée / apéritif"   onclick="selectChip(this)">🥙 Entrée / apéritif</div>
+        <div class="chip sel-pain"    data-val="Pain / viennoiserie"  onclick="selectChip(this)">🥖 Pain / viennoiserie</div>
+        <div class="chip sel-autre"   data-val="Autre"               onclick="selectChip(this)">✨ Autre</div>
+      </div>
+    </div>
+
+    <button class="btn-envoyer" id="btn-envoyer" onclick="envoyerApport()">
+      ✦ Ajouter mon apport
+    </button>
+    <div class="status-msg" id="status-msg"></div>
+  </div>
+
+  <!-- LISTE -->
+  <div class="liste-card">
+    <div class="liste-titre">
+      <span>🧺 Ce que l'on apporte</span>
+      <button class="btn-refresh" onclick="chargerListe()">↻ Actualiser</button>
+    </div>
+    <div id="liste-contenu">
+      <div class="loading-spinner">Chargement en cours…</div>
+    </div>
+  </div>
+
+  <footer>
+    Repas festif de fin de stage · CRAMIF Essonne · Service Social<br>
+    Avec toute notre affection pour notre stagiaire 🎓
+  </footer>
+
+</div>
+
+<!-- Modal suppression -->
+<div class="modal-overlay" id="modal" onclick="fermerModal(event)">
+  <div class="modal">
+    <h3>🗑 Supprimer un apport</h3>
+    <p>Entrez votre prénom pour confirmer la suppression de votre apport.</p>
+    <input type="text" class="modal-input" id="modal-prenom" placeholder="Votre prénom…">
+    <div class="modal-btns">
+      <button class="btn-modal-cancel" onclick="fermerModal()">Annuler</button>
+      <button class="btn-modal-confirm" onclick="confirmerSuppression()">Supprimer</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════
+// ⚠️ REMPLACER PAR L'URL DE VOTRE APPS SCRIPT
+// ══════════════════════════════════════════════════
+const WEBHOOK_URL = 'VOTRE_URL_APPS_SCRIPT_ICI';
+
+let categorieSelectionnee = '';
+let suppressionCible = null; // {id, prenom}
+
+// ── Chips ──
+function selectChip(el) {
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  categorieSelectionnee = el.dataset.val;
+}
+
+// ── Envoi ──
+async function envoyerApport() {
+  const prenom = document.getElementById('input-prenom').value.trim();
+  const plat   = document.getElementById('input-plat').value.trim();
+
+  if (!prenom) { setStatus('Veuillez saisir votre prénom.', 'err'); return; }
+  if (!plat)   { setStatus('Veuillez décrire ce que vous apportez.', 'err'); return; }
+  if (!categorieSelectionnee) { setStatus('Veuillez choisir une catégorie.', 'err'); return; }
+
+  const btn = document.getElementById('btn-envoyer');
+  btn.disabled = true;
+  setStatus('⏳ Envoi en cours…', 'loading');
+
+  const payload = JSON.stringify({
+    action: 'ajouter',
+    prenom, plat,
+    categorie: categorieSelectionnee,
+    horodatage: new Date().toLocaleString('fr-FR')
+  });
+
+  try {
+    await fetch(WEBHOOK_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: payload
+    });
+    await new Promise(r => setTimeout(r, 1500));
+
+    setStatus('✓ Votre apport a été ajouté !', 'ok');
+    document.getElementById('input-prenom').value = '';
+    document.getElementById('input-plat').value = '';
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+    categorieSelectionnee = '';
+
+    await chargerListe();
+  } catch(e) {
+    setStatus('✗ Erreur : ' + e.message, 'err');
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+// ── Suppression ──
+function demanderSuppression(id, prenom) {
+  suppressionCible = { id, prenom };
+  document.getElementById('modal-prenom').value = '';
+  document.getElementById('modal').classList.add('show');
+  setTimeout(() => document.getElementById('modal-prenom').focus(), 100);
+}
+
+function fermerModal(evt) {
+  if (evt && evt.target !== document.getElementById('modal')) return;
+  document.getElementById('modal').classList.remove('show');
+  suppressionCible = null;
+}
+
+async function confirmerSuppression() {
+  const saisi = document.getElementById('modal-prenom').value.trim().toLowerCase();
+  if (!suppressionCible) return;
+  if (saisi !== suppressionCible.prenom.toLowerCase()) {
+    document.getElementById('modal-prenom').style.border = '1.5px solid var(--rouge-doux)';
+    document.getElementById('modal-prenom').placeholder = '⚠ Prénom incorrect';
+    return;
+  }
+
+  document.getElementById('modal').classList.remove('show');
+
+  const payload = JSON.stringify({
+    action: 'supprimer',
+    id: suppressionCible.id,
+    prenom: suppressionCible.prenom
+  });
+
+  try {
+    await fetch(WEBHOOK_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: payload
+    });
+    await new Promise(r => setTimeout(r, 1500));
+    await chargerListe();
+  } catch(e) {
+    console.error(e);
+  }
+  suppressionCible = null;
+}
+
+// ── Chargement liste ──
+async function chargerListe() {
+  document.getElementById('liste-contenu').innerHTML =
+    '<div class="loading-spinner">Chargement…</div>';
+  try {
+    const resp = await fetch(WEBHOOK_URL + '?action=lire', {
+      method: 'GET',
+      mode: 'cors'
+    });
+    const data = await resp.json();
+    if (data.status === 'ok') afficherListe(data.entries);
+    else document.getElementById('liste-contenu').innerHTML =
+      '<div class="liste-vide">Aucun apport enregistré pour l\'instant.</div>';
+  } catch(e) {
+    document.getElementById('liste-contenu').innerHTML =
+      '<div class="liste-vide">Impossible de charger la liste. Actualisez dans quelques instants.</div>';
+  }
+}
+
+function afficherListe(entries) {
+  const el = document.getElementById('liste-contenu');
+  if (!entries || entries.length === 0) {
+    el.innerHTML = '<div class="liste-vide">Soyez le premier à ajouter votre apport ! 🎉</div>';
+    updateEquilibre([]);
+    return;
+  }
+
+  // Grouper par catégorie
+  const cats = {
+    'Plat salé':           { label: '🥗 Plats salés',          cls: 'cat-sale',    items: [] },
+    'Plat sucré / dessert':{ label: '🍰 Sucrés / desserts',     cls: 'cat-sucre',   items: [] },
+    'Boisson':             { label: '🥤 Boissons',               cls: 'cat-boisson', items: [] },
+    'Entrée / apéritif':   { label: '🥙 Entrées / apéritifs',   cls: 'cat-entree',  items: [] },
+    'Pain / viennoiserie': { label: '🥖 Pains / viennoiseries', cls: 'cat-pain',    items: [] },
+    'Autre':               { label: '✨ Autres',                 cls: 'cat-autre',   items: [] },
+  };
+
+  entries.forEach(e => {
+    const cat = cats[e.categorie] || cats['Autre'];
+    cat.items.push(e);
+  });
+
+  let html = '';
+  for (const [, cat] of Object.entries(cats)) {
+    if (cat.items.length === 0) continue;
+    html += `<div class="cat-section">
+      <div class="cat-header ${cat.cls}">${cat.label}</div>`;
+    cat.items.forEach(e => {
+      html += `<div class="apport-item">
+        <span class="apport-nom">${escHtml(e.prenom)}</span>
+        <span class="apport-plat">${escHtml(e.plat)}</span>
+        <button class="btn-suppr" onclick="demanderSuppression('${escHtml(e.id)}','${escHtml(e.prenom)}')">✕ Retirer</button>
+      </div>`;
+    });
+    html += '</div>';
+  }
+  el.innerHTML = html;
+  updateEquilibre(entries);
+}
+
+function updateEquilibre(entries) {
+  const total = entries.length || 1;
+  const map = {
+    'Plat salé':           'sale',
+    'Plat sucré / dessert':'sucre',
+    'Boisson':             'boisson',
+    'Entrée / apéritif':   'entree',
+    'Pain / viennoiserie': 'pain',
+    'Autre':               'autre'
+  };
+  const counts = { sale:0, sucre:0, boisson:0, entree:0, pain:0, autre:0 };
+  entries.forEach(e => {
+    const k = map[e.categorie] || 'autre';
+    counts[k]++;
+  });
+  const max = Math.max(...Object.values(counts), 1);
+  for (const [k, v] of Object.entries(counts)) {
+    document.getElementById('count-' + k).textContent = v;
+    document.getElementById('bar-' + k).style.width = (v / max * 100) + '%';
+  }
+}
+
+function setStatus(msg, type) {
+  const el = document.getElementById('status-msg');
+  el.textContent = msg;
+  el.className = 'status-msg ' + type;
+  if (type === 'ok') setTimeout(() => el.className = 'status-msg', 4000);
+}
+
+function escHtml(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+// ── Init ──
+chargerListe();
+setInterval(chargerListe, 30000); // Actualisation auto toutes les 30s
+</script>
+</body>
+</html>
